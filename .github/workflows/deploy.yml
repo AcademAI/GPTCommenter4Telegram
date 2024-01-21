@@ -1,0 +1,21 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Production:
+    name: Deploy to Homelab
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: Cloudflared SSH Run Remote Commands
+        uses: npgy/cloudflared-ssh-action@v2.0
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ secrets.USER_NAME }}
+          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          commands: cd /root/GPTCommenter4Telegram; git reset --hard; git checkout main; git pull origin main; docker stop GPTCommenter4Telegram; docker rm GPTCommenter4Telegram; docker rmi GPTCommenter4Telegram; docker build -t GPTCommenter4Telegram .; docker run --detach --name GPTCommenter4Telegram GPTCommenter4Telegram; docker image prune -a -f

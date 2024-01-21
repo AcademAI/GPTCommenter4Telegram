@@ -1,0 +1,7 @@
+files/
+venv/
+data.txt
+.env
+settings.ini
+SESSION_FOR_TELEGRAM_COMMENTOR.session
+SESSION_FOR_TELEGRAM_COMMENTOR.session-journal
